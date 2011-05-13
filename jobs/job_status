@@ -1,0 +1,60 @@
+#!/bin/bash
+# Tell us what is going on with our job
+in=/home/gce_demo/demo1/in
+out=/home/gce_demo/demo1/out
+work=/home/gce_demo/demo1/work
+# echo `ls $in/$1 $out/$1 | wc -l`
+
+if [ -z "$1"];
+then
+    echo "No filename specified!"
+    exit 1
+fi
+
+# if test `ls $in/$1 $work/$1 | wc -l` -eq 0 
+# then
+#     echo "Your file ($1) is missing! <br \>Please try again or ask for help. <span id='iserror'></span>"
+#     exit 1
+# fi
+
+if test `ls $in/$1 $work/$1 | wc -l` -eq 0
+then
+    # echo "aJob has completed."
+    if test `cat $out/$1.status` -eq 1
+    then
+        echo "Error in simulation! <br \>Please see log and source files. <span id='iserror'></span>"
+        exit 1
+    else
+        done_msgs=`grep '(RESULT)' $out/$1.log | sed 's/(RESULT)/<br \\\>/'`
+        echo "$done_msgs <span id='isdone'></span>"
+        exit 1
+    fi
+fi
+
+if test `ls $work/$1 | wc -l` -gt 0
+then 
+# If our job is the oldest (in first place), then it must be executing!
+    echo "Job is executing!"
+
+    if test `ls $out/$1.log | wc -l` -gt 0
+    then
+        status_msgs=`grep '(STATUS)' $out/$1.log | sed 's/(STATUS)/<br \\\>/'`
+        progress=`grep '%' $out/$1.log | tail -n 2 | head -n 1`
+        echo $status_msgs $progress
+    fi
+
+    exit 0
+fi
+
+# Get the position in line for our job.
+pos=`ls -c $in | tac | grep -n $1 | head -n 1 | awk -F ':' '{print $1}'`
+# pos=`ls -c $in | tac | grep -n $1 | head -n 1 | awk -F ':' '{print $1}'`
+# pos=`expr $pos`
+echo $pos
+# Our job is waiting.
+timenow=`date '+%T'`
+echo "Waiting behind $pos other jobs... ($timenow)"
+exit 0
+
+
+

@@ -1,0 +1,103 @@
+
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>gce demo</title> 
+    <link rel="stylesheet" type="text/css" href="style.css"> 
+    <link href="fileUploader.css" rel="stylesheet" type="text/css" />
+    <script src="jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script src="jquery.fileUploader.js" type="text/javascript"></script>
+</head> 
+
+<body> 
+<script>
+    $(document).ready(function(){
+        $("#step2_wrapper").hide();
+        $("#step3_wrapper").hide();
+    });
+
+    $(window).unload(function(){
+
+        var fname = $.trim($("#my_fname").text());
+        // alert('thing2');
+        $.ajax({
+            type: 'POST',
+            url: "remove_job.php",
+            data: {filename: fname},
+            // success: function (data) {alert(data);},
+            async: false
+        });
+    });
+
+</script>
+<div id="wrapper"> 
+	<h1>try gce.</h1> 
+	<p id="info">Provided by <a href="http://www-ee.stanford.edu/~jela/">Jelena Vuckovic</a>'s <a href="http://www.stanford.edu/group/nqp/">research group</a>, Stanford University.
+    <br />
+    Need help? jesselu at stanford dot edu</p> 
+    <h2 id="step_one">1. Upload</h2>
+
+<div id="main_container">
+	<form action="upload.php" method="post" enctype="multipart/form-data">
+		<input id="uploader1" name="userfile" type="file" />
+		<input type="submit" value="Upload" id="pxUpload" />
+<!---		<input type="reset" value="Clear" id="pxClear" />--->
+	</form>
+	<script type="text/javascript">
+		$(function(){
+			$('#uploader1').fileUploader();
+            //alert("test");
+            //};
+		});
+	</script>
+</div>
+
+    <h3 id="step_two">2. Simulate</h3>
+    <p id="step2_wrapper">
+    <span id="my_status">Checking job status...</span>
+    </p>
+
+    <script>
+    function insert_links(){
+        var fname = $.trim($("#my_fname").text());
+        $("#step3_wrapper").append( 
+            '<a href="out/' + fname + '">' + fname + '</a> | ' + 
+            '<a href="out/' + fname + '.log" target="_blank">Log</a> | ' + 
+            '<a href="out/' + fname + '.source" target="_blank">Source</a>'
+            );
+    }
+
+    function my_status(){
+        var fname = $("#my_fname").text();
+        $.post("job_status.php", 
+            {filename: fname}, 
+            function(data) {
+                $("#my_status").replaceWith('<span id="my_status"></span>');
+                $("#my_status").append(data);
+            });
+        if ($('#isdone').length == 1) {
+            $("#step_two").replaceWith('<h3>2. Simulation successful.</h3>');
+            $("#step_three").replaceWith('<h2>3. Download</h2>');
+            $("#step3_wrapper").show("slow");
+        }
+        else if ($('#iserror').length == 1) { 
+            $("#step_two").replaceWith('<h3>2. Simulation unsuccessful.</h3>');
+            $("#step_three").replaceWith('<h2>3. Download</h2>');
+            $("#step3_wrapper").show("slow");
+        }
+        else if ($('#ismissing').length == 1) { 
+        }
+        else {
+            setTimeout('my_status()', 1000);
+        }
+
+}
+</script>
+            
+<h3 id="step_three">3. Download</h3>
+    <p id="step3_wrapper">
+    </p>
+</div> 
+ 
+</body> 
+</html> 

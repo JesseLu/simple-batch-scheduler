@@ -1,0 +1,68 @@
+/*reset css*/
+body, div, span, h1, h2, h3, h4, h5, h6, p, img, small, strong, sub, sup, ol, ul, li, fieldset, form, label, legend, table, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	background: transparent;
+}
+
+body {
+	font-size: 24px;
+	font-family: "Courier New", sans-serif;
+    font-family: Helvetica, sans-serif;
+	background: #ffffff;
+	color: #000000;
+}
+
+	a { color: #ccc; text-decoration: none;}
+	a:hover { color: #999; text-decoration: none; }
+
+#wrapper {
+	width: 500px;
+	padding-left: 0px;
+	margin: 100px auto;
+}
+
+	#header {
+		padding: 20px 0 10px;
+		overflow: hidden;
+	}
+	
+	h1 {
+		width: 700px;
+		display: block;
+		font-size: 60px; line-height: 40px;
+		font-weight: bold; color: #000;
+	}
+    
+	h2 {
+		width: 700px;
+		display: block;
+		font-family: Georgia, serif;
+		font-size: 32px; line-height: 36px;
+		font-weight: bold; color: #000;
+	}
+
+	h3 {
+		width: 700px;
+		display: block;
+		font-family: Georgia, serif;
+		font-size: 32px; line-height: 36px;
+		font-weight: bold; color: #ccc;
+	}
+	
+	p {
+		width: 500px;
+		margin: 20px 0 10px;
+		font-family: Georgia, serif;
+		font-size: 24px; line-height: 24px;
+		color: #999;
+	}
+	
+	#info {
+		font-size: 16px;
+		font-family: Georgia, serif;
+		color: #ccc;
+	}
